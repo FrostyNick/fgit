@@ -6,7 +6,7 @@ projects_path="$HOME/p"
 assertname() {
     name=$(ls --hyperlink=no)
     if [ "$(echo)" = "$name" ]; then
-        echo "No directory found. Likely due to invalid git clone. Exiting."; (return -1 || exit)
+        echo "No directory found. Likely due to invalid git clone. You might need to do \`cd -\` to go back. Exiting."; (return -1 || exit)
     fi
 }
 
@@ -42,7 +42,6 @@ initfgit() {
     cd $projects_path/$name && cd $2
     rmdir $tmpgc
     OLDPWD=$olpwd
-    echo;echo test oldpwd frfr nocaptua;echo
 }
 
 
@@ -61,9 +60,7 @@ else
     echo "  \$2      directory/folder to make repo with sparse checkout or '.' for regular clone" # --filter=blob:none
     # echo "  \$name   comes from directory created after clone"
     echo
-    echo "Also note that in order for your cwd to be changed as expected, this script should be sourced (the . at the beginning in below example).";
-    echo
-    echo "Example: . fgit https://github.com/FrancisTR/Purified GodotGame"
+    echo "Example: . fgit https://github.com/FrancisTR/Godot-Purified GodotGame"
     echo
     echo "If this program is not already in your path, you can symlink it. Here's an example:"
     echo "sudo ln -s \$HOME/p/fgit/fgit.sh /usr/bin/fgit"

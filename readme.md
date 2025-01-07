@@ -10,9 +10,6 @@ This tool automatically clones repositories (optionally partial clones), moves t
 
 # Installation
 
-> [!WARNING]  
-> Only tested on Arch Linux so far. This should work across all modern linux distros though.
-
 - Should work on vast majority of Linux systems.
 - Not on MacOS at the moment. Create an issue if you're up for the task!
 - On Windows, it's not supported at the moment, but you might be able to run this program in Git Bash. Keep in mind the home directory might not be where you might expect it. WSL or Cygwin may also work.
@@ -48,6 +45,7 @@ sudo pacman -S git
 ```sh
 # Move below to a good location. you can put it in your projects folder too for easier management.
 git clone https://github.com/frostynick/fgit
+chmod +x fgit/fgit.sh
 sudo ln -s $(pwd)/fgit/fgit.sh /usr/bin/fgit
 # above uses a soft link, which means IF you move the git cloned folder, you will need to `rm` the old link and link it again.
 ```
@@ -60,12 +58,15 @@ https://support.apple.com/en-us/102149
 # Getting Started
 
 > [!IMPORTANT]
-> This is a *very* early project. As a result, I haven't added a prompt for where your project folder should be. You should change the `projects_path` value in [fgit.sh](fgit.sh) to be where you place your projects. Create the folder of your choice if it doesn't exist. 
+> This is a *very* early project. As a result, I haven't added a prompt for where your project folder should be. You should change the `projects_path` value in [fgit.sh](fgit.sh) to be where you place your projects. Create the folder of your choice if it doesn't exist. By default `~/p` is used.
 
 If it worked, you can run `fgit` for help and examples.
 
 `git pull` to update. There might be a merge conflict if you changed the projects_path. That's on the roadmap to fix.
 
+## Troubleshooting
+
+- If you are in `/tmp/tmp.xxx/`, you can do `cd -` to go back. /tmp folder should delete everything after restart. And if nothing went wrong it's deleted after repo is pulled.
 
 # Roadmap
 
