@@ -1,7 +1,39 @@
 #!/usr/bin/env bash
 
-# options (this will probably be moved in a future update)
-projects_path="$HOME/p"
+if [ ! -f "${XDG_CONFIG_HOME:=$HOME/.config}/fgit.ini" ] && [ ! -f "$HOME/.fgit.ini" ]; then
+    echo "If you want to create a directory, kill this program (ctrl + c) and do that first."
+    echo -n "Set a project path for projects to be cloned to (type . to use current directory): "
+    projects_path=""
+    while read line; do
+        if [ "$line" = "." ]; then
+            projects_path="$(pwd)"
+        elif [ -d "$line" ]; then
+            projects_path="$line"
+        fi
+        if [ "$projects_path" ]; then
+            if [ -d "${XDG_CONFIG_HOME:=$HOME/.config}" ]; then
+                config_path="${XDG_CONFIG_HOME:=$HOME/.config}/fgit.ini"
+            else
+                config_path="$HOME/.fgit.ini"
+            fi
+            read -p "$projects_path will be used. To change this again, modify or remove the file located in: $config_path";echo
+            echo "projects_path=$projects_path" >> $config_path
+            break
+        fi
+
+        echo "That directory doesn't exist. Try again."
+    done
+fi
+
+if [ -f "$HOME/.config/fgit.ini" ]; then
+    config_path="$HOME/.config/fgit.ini"
+elif [ -f "$XDG_CONFIG_HOME/fgit.ini" ]; then
+    config_path="$XDG_CONFIG_HOME/fgit.ini"
+else
+    config_path="$HOME/.fgit.ini"
+fi
+
+projects_path="$(grep '^projects_path=' $config_path | awk -F '=' '{ print $2 }')"
 
 assertname() {
     name=$(ls --hyperlink=no)
@@ -39,6 +71,7 @@ initfgit() {
     fi
 
     (mv $name $projects_path/$name) && echo Successfully saved in $projects_path/$name || echo Error: Failed to move project.
+    # cd $projects_path/$name && (cd $2;zoxide add .) # if this is added, disable by default
     cd $projects_path/$name && cd $2
     rmdir $tmpgc
     OLDPWD=$olpwd
@@ -46,7 +79,7 @@ initfgit() {
 
 
 if [ $2 ]; then
-[[ "${BASH_SOURCE[0]}" != "${0}" ]] || (echo;echo "WARNING: This is not sourced which may lead to unintended behavior. If this is not intentional, type Ctrl + C and try again. Run fgit without arguments for more info. Otherwise press enter.";read)
+    [[ "${BASH_SOURCE[0]}" != "${0}" ]] || (echo;echo "WARNING: This is not sourced which may lead to unintended behavior. If this is not intentional, type Ctrl + C and try again. Run fgit without arguments for more info. Otherwise press enter.";read)
     initfgit $1 $2
 else
     if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
@@ -63,5 +96,10 @@ else
     echo "Example: fgit https://github.com/FrancisTR/Godot-Purified GodotGame"
     echo
     echo "If this program is not already in your path, you can symlink it. Here's an example:"
-    echo "sudo ln -s \$HOME/p/fgit/fgit.sh /usr/bin/fgit"
+    echo "sudo ln -s \$HOME/path/to/fgit/fgit.sh /usr/bin/fgit"
+    echo
+    echo Other values:
+    echo config_path=$config_path \(detected\)
+    echo projects_path=$projects_path
+    # echo zoxide=$(command -v zoxide >/dev/null && echo "found" || echo "not found")
 fi

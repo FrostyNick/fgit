@@ -3,7 +3,7 @@
 
 Git cloning to the next level! A small tool aimed at being beginner friendly, minimal, and powerful with concise syntax.
 
-This tool automatically clones repositories (optionally partial clones), moves them to your `$HOME/p` projects folder, and navigates you inside. Save time on routine tasks and focus on coding.
+This tool automatically clones repositories with partial clone support, moves it to your projects folder, and navigates your current directory inside. Save time on routine tasks and focus on coding.
 
 > [!WARNING]  
 > This project is in *very* early stages. If you encounter bugs from main (stable) branch, let me know in Issues tab or comment on similar issues. Thanks!
@@ -59,20 +59,16 @@ https://support.apple.com/en-us/102149
 
 # Getting Started
 
-> [!IMPORTANT]
-> This is a *very* early project. As a result, I haven't added a prompt for where your project folder should be. You should change the `projects_path` value in [fgit.sh](fgit.sh) to be where you place your projects. Create the folder of your choice if it doesn't exist. By default `~/p` is used.
+If the installation worked, you can run `fgit` for help and examples.
 
-If it worked, you can run `fgit` for help and examples.
-
-`git pull` to update. There might be a merge conflict if you changed the projects_path. That's on the roadmap to fix.
+Consider leaving a star if you found this tool useful.
 
 ## Troubleshooting
 
-- If you are in `/tmp/tmp.xxx/`, you can do `cd -` to go back. /tmp folder should delete everything after restart. And if nothing went wrong it's deleted after repo is pulled.
+- If you are in `/tmp/tmp.xxx/`, you can type `cd -` to go back. /tmp folder should delete everything after restart. And if nothing went wrong it's deleted after repo is pulled.
 
 # Roadmap
 
-- [ ] Projects path prompt and config file, so updating doesn't create a git conflict.
 - [ ] Make typing "https://github.com/" optional while not breaking other websites that use git.
 - [ ] Other things I forgot to write here. Open to suggestions.
 
