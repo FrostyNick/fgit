@@ -60,7 +60,7 @@ else
     echo "  \$2      directory/folder to make repo with sparse checkout or '.' for regular clone" # --filter=blob:none
     # echo "  \$name   comes from directory created after clone"
     echo
-    echo "Example: . fgit https://github.com/FrancisTR/Godot-Purified GodotGame"
+    echo "Example: fgit https://github.com/FrancisTR/Godot-Purified GodotGame"
     echo
     echo "If this program is not already in your path, you can symlink it. Here's an example:"
     echo "sudo ln -s \$HOME/p/fgit/fgit.sh /usr/bin/fgit"

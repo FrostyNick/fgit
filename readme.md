@@ -6,7 +6,7 @@ Git cloning to the next level! A small tool aimed at being beginner friendly, mi
 This tool automatically clones repositories (optionally partial clones), moves them to your `$HOME/p` projects folder, and navigates you inside. Save time on routine tasks and focus on coding.
 
 > [!WARNING]  
-> This project is in *very* early stages. If you encounter bugs from master (stable) branch, let me know in Issues tab or comment on similar issues. Thanks!
+> This project is in *very* early stages. If you encounter bugs from main (stable) branch, let me know in Issues tab or comment on similar issues. Thanks!
 
 # Installation
 
@@ -48,6 +48,8 @@ git clone https://github.com/frostynick/fgit
 chmod +x fgit/fgit.sh
 sudo ln -s $(pwd)/fgit/fgit.sh /usr/bin/fgit
 # above uses a soft link, which means IF you move the git cloned folder, you will need to `rm` the old link and link it again.
+echo "alias fgit=\". fgit\"" >> ~/.bashrc
+# above recommended but optional; ~/.bashrc can be ~/.bash_aliases if you have that setup
 ```
 
 <!--
