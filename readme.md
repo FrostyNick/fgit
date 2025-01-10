@@ -1,9 +1,9 @@
 
 # fgit
 
-Git cloning to the next level! A small tool aimed at being beginner friendly, minimal, and powerful with concise syntax.
+Git cloning to the next level! A small tool aimed at saving time, being beginner friendly, minimal, and powerful with concise syntax.
 
-This tool automatically clones repositories with partial clone support, moves it to your projects folder, and navigates your current directory inside. Save time on routine tasks and focus on coding.
+This tool automatically clones repositories minimally with (optionally) sparse clone support, moves it to your projects folder, and navigates your current directory inside.
 
 > [!WARNING]  
 > This project is in *very* early stages. If you encounter bugs from main (stable) branch, let me know in Issues tab or comment on similar issues. Thanks!
@@ -17,7 +17,7 @@ This tool automatically clones repositories with partial clone support, moves it
 ## Dependencies
 
 > [!NOTE]  
-> You probably have these installed.
+> You probably have these installed and can skip this section.
 
 - `bash`
 - `git` - for git cloning to work, you'll need git >= 2.19.0 for the partial cloning part of this program to work.
@@ -49,7 +49,7 @@ chmod +x fgit/fgit.sh
 sudo ln -s $(pwd)/fgit/fgit.sh /usr/bin/fgit
 # above uses a soft link, which means IF you move the git cloned folder, you will need to `rm` the old link and link it again.
 echo "alias fgit=\". fgit\"" >> ~/.bashrc
-# above recommended but optional; ~/.bashrc can be ~/.bash_aliases if you have that setup
+# ~/.bashrc can be ~/.bash_aliases if you have that setup
 ```
 
 <!--
@@ -69,6 +69,7 @@ Consider leaving a star if you found this tool useful.
 
 # Roadmap
 
-- [ ] Make typing "https://github.com/" optional while not breaking other websites that use git.
+- [ ] Make typing `https://github.com/` optional while not breaking other websites that use git.
+- [ ] Option for regular git clone (the git clone in fgit doesn't use git history at the moment.)
 - [ ] Other things I forgot to write here. Open to suggestions.
 
