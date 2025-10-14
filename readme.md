@@ -5,22 +5,21 @@ Git cloning to the next level! A small tool aimed at saving time, being beginner
 
 This tool automatically clones repositories minimally with (optionally) sparse clone support, moves it to your projects folder, and navigates your current directory inside.
 
-> [!WARNING]  
-> This project is in *very* early stages. If you encounter bugs from main (stable) branch, let me know in Issues tab or comment on similar issues. Thanks!
+> [!WARNING]
+> This always runs `git` with `--depth=1`, unless removed from the code at the moment.
 
 # Installation
 
-- Should work on vast majority of Linux systems.
-- Not on MacOS at the moment. Create an issue if you're up for the task!
-- On Windows, it's not supported at the moment, but you might be able to run this program in Git Bash. Keep in mind the home directory might not be where you might expect it. WSL or Cygwin may also work.
+- Compatible with: Linux and Windows (Git Bash).
+- MacOS compatability is unknown. Create an issue if you're willing to test this on your device.
 
-## Dependencies
+## 1. Dependencies
 
-> [!NOTE]  
+> [!NOTE]
 > You probably have these installed and can skip this section.
 
 - `bash`
-- `git` - for git cloning to work, you'll need git >= 2.19.0 for the partial cloning part of this program to work.
+- `git` - for git cloning to work. If you use partial cloning, you'll need git >= 2.19.0.
 
 **Debian-based (Ubuntu, Linux Mint, Pop OS):**
 
@@ -40,14 +39,28 @@ sudo dnf install git
 sudo pacman -S git
 ```
 
-## Git Clone
+## 2. Git
 
 ```sh
 # Move below to a good location. you can put it in your projects folder too for easier management.
 git clone https://github.com/frostynick/fgit
 chmod +x fgit/fgit.sh
-sudo ln -s $(pwd)/fgit/fgit.sh /usr/bin/fgit
+```
+
+## 3. Path
+
+Run it from everywhere.
+
+One of the below:
+```sh
+sudo ln -s $(pwd)/fgit/fgit.sh /usr/bin/fgit # Linux / Git Bash
+ln -s $(pwd)/fgit/fgit.sh $PATH/usr/bin/fgit # Usually works on Termux (will work if there's just one value in $PATH)
+ln -s $(pwd)/fgit/fgit.sh /data/data/com.termux/files/usr/bin/fgit # For sure works on Termux but longer
+sudo ln -s $(pwd)/fgit/fgit.sh /usr/local/bin/fgit # MacOS / BSD-based system (Experimental). If it works on MacOS / BSD-based system, this is probably where it goes. You're welcome to create an issue on how this went! (I cannot test on MacOS at the moment, and I haven't tried BSD-based systems yet.)
 # above uses a soft link, which means IF you move the git cloned folder, you will need to `rm` the old link and link it again.
+```
+
+```sh
 echo "alias fgit=\". fgit\"" >> ~/.bashrc
 # ~/.bashrc can be ~/.bash_aliases if you have that setup
 ```
@@ -59,9 +72,7 @@ https://support.apple.com/en-us/102149
 
 # Getting Started
 
-If the installation worked, you can run `fgit` for help and examples.
-
-Consider leaving a star if you found this tool useful.
+If the installation worked, you can run `fgit` for quick setup. After that, you can always run `fgit` for help, examples, and checking your config.
 
 ## Troubleshooting
 
@@ -69,7 +80,10 @@ Consider leaving a star if you found this tool useful.
 
 # Roadmap
 
-- [ ] Make typing `https://github.com/` optional while not breaking other websites that use git.
-- [ ] Option for regular git clone (the git clone in fgit doesn't use git history at the moment.)
+- [x] Make typing `https://github.com/` optional while not breaking other websites that use git. It can be changed to other websites too.
+- [ ] Option for regular git clone (the git clone in fgit doesn't use git history at the moment unless `--depth=1` is removed from the code.
+- [ ] Add flags that make sense.
 - [ ] Other things I forgot to write here. Open to suggestions.
-
+<!--
+- [ ] Add shorthand "h" (GitHub), "l" (GitLab), "b" (codeberg) and several other websites. Syntax not yet determined.
+-->
