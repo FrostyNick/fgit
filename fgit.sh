@@ -118,7 +118,7 @@ else
     echo config_path=$config_path \(detected\)
     echo projects_path=$projects_path
     echo git_url=$git_url
-    echo version=1.1.0 \(hardcoded\)
+    echo version=1.1.1 \(hardcoded\)
     echo
     # echo zoxide=$(command -v zoxide >/dev/null && echo "found" || echo "not found")
     if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then

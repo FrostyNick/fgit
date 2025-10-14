@@ -1,19 +1,28 @@
 
 # fgit
 
-Git cloning to the next level! A small tool aimed at saving time, being beginner friendly, minimal, and powerful with concise syntax.
+Git cloning to the next level! A small tool aimed at saving time, being beginner friendly, minimal, and concise.
 
-This tool automatically clones repositories minimally with (optionally) sparse clone support, moves it to your projects folder, and navigates your current directory inside.
+This tool automatically clones repositories minimally with sparse clone support (partial git repos), moves it to your projects folder, and navigates your current directory inside.
 
 > [!WARNING]
-> This always runs `git` with `--depth=1`, unless removed from the code at the moment.
+> This always runs `git` with `--depth=1` which leads to not preserving git history, unless removed from the code at the moment.
+
+### Example
+
+`fgit FrostyNick/fgit` is basically the same as:
+
+```sh
+cd ~/veryOpinionatedProjects && git clone https://github.com/FrostyNick/fgit && cd fgit ; restoreOldPwd
+```
+(some of this is customizable in the config, which is customized on first launch.)
 
 # Installation
 
 - Compatible with: Linux and Windows (Git Bash).
-- MacOS compatability is unknown. Create an issue if you're willing to test this on your device.
+- MacOS / *BSD compatability is unknown. Create an issue if you're willing to test this on your device.
 
-## 1. Dependencies
+### 1. Dependencies
 
 > [!NOTE]
 > You probably have these installed and can skip this section.
@@ -39,7 +48,7 @@ sudo dnf install git
 sudo pacman -S git
 ```
 
-## 2. Git
+### 2. Git
 
 ```sh
 # Move below to a good location. you can put it in your projects folder too for easier management.
@@ -47,7 +56,7 @@ git clone https://github.com/frostynick/fgit
 chmod +x fgit/fgit.sh
 ```
 
-## 3. Path
+### 3. Path
 
 Run it from everywhere.
 
@@ -74,7 +83,7 @@ https://support.apple.com/en-us/102149
 
 If the installation worked, you can run `fgit` for quick setup. After that, you can always run `fgit` for help, examples, and checking your config.
 
-## Troubleshooting
+### Troubleshooting
 
 - If you are in `/tmp/tmp.xxx/`, you can type `cd -` to go back. /tmp folder should delete everything after restart. And if nothing went wrong it's deleted after repo is pulled.
 
