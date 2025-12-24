@@ -1,21 +1,20 @@
 #!/usr/bin/env bash
 
 if [ ! -f "${XDG_CONFIG_HOME:=$HOME/.config}/fgit.ini" ] && [ ! -f "$HOME/.fgit.ini" ]; then
+    cwd="$(pwd)"
+    cwdp=${cwd%/*} # dirname $(pwd) # works in gnu but not everywhere
     echo "NOTE: If you want to create a directory, kill this program (ctrl + c) and do that first."
     echo "SETUP: Set a project path for projects to be cloned to. Options to type:"
     echo "- Type any absolute path. Example: /etc/projects (Locations with root permissions at your own risk. Not tested yet.)"
-    echo "- Type . to use current directory: $(pwd)"
+    echo "- Type . to use current directory: $cwd"
     echo "- Type ~ to use home directory: $HOME"
-    echo "- Type .. to use parent directory: $(pwd)/.."
+    echo "- Type .. to use parent directory: $cwdp"
     projects_path=""
     while read line; do
         if [ "$line" = "." ]; then
-            projects_path="$(pwd)"
+            projects_path="$cwd"
         elif [ "$line" = ".." ]; then
-            projects_path="$(pwd)/.."
-        # elif [ "$line" = "./" ]; then
-        #     # read next line with:
-        #     projects_path="$(pwd)/$line"
+            projects_path="$cwdp"
         elif [ "$line" = "~" ]; then
             projects_path="$HOME"
         elif [ -d "$line" ]; then
@@ -55,8 +54,8 @@ if [ "$git_url" = "" ]; then
 fi
 olpwd="$(pwd)"
 
-assertname() {
-    name=$(env ls --hyperlink=no)
+setname() {
+    name="$(env ls -A --hyperlink=no)"
     if [ "$(echo)" = "$name" ]; then
         echo "ERROR: No directory found. Likely due to invalid git clone. Exiting."; cd "$olpwd"; (return -1 || exit)
     fi
@@ -65,34 +64,44 @@ assertname() {
 initfgit() {
     tmpgc=$(mktemp -d)
     name=""
-    echo "$1" | grep ":/\|^http" &> /dev/null && rname="$1" || rname="$(echo "$git_url$1")"
+    echo "$1" | grep ":/\|^http" &> /dev/null && url="$1" || url="$(echo "$git_url$1")"
 
     if [ ! "$2" = "." ]; then
         echo "Running git clone without checkout \(empty\) in $tmpgc:"
-        cd $tmpgc && git clone -n --depth=1 --filter=tree:0 $rname || (return || exit)
+        cd $tmpgc && git clone -n --depth=1 --filter=tree:0 $url || (return || exit)
 
-        assertname || return
+        setname || return
         echo;echo Running git sparse-checkout in $name directory:
 
         # if directory exists, cd and do sparse-checkout
-        cd $name && (git sparse-checkout set --no-cone $2; git checkout) || (return || exit)
+        cd "$name" && (git sparse-checkout set --no-cone $2; git checkout) || (return || exit)
         # if old dir exists, move directory and cd to non-empty dir
         cd - ; echo
     else
-        cd $tmpgc && git clone --depth=1 $rname
-        assertname || return
+        cd $tmpgc && git clone --depth=1 $url
+        setname || return
     fi
 
+    # if [ -d "$projects_path/$name" ]; then # HACK: Transition from name to name_owner as default
     if [ -d "$projects_path/$name" ]; then # -d is directory
-        newName="$name"Dup"$RANDOM" # Yes naming could be better. Also $RANDOM could also rarely collide.
-        echo "NOTE: Existing directory/folder exists, renaming from \"$name\" to \"$newName\"."
-        mv $name $newName
-        name=$newName
+        name_="${name/_/__}"
+        owner="$(echo "$url" | awk -F '/' '{print $(NF-1)}')"
+        name_owner="$name_"_"$owner"
+        # echo "Name + owner: ${name/_/__}"
+        if [ -d "$projects_path/$name_owner" ]; then # -d is directory
+            newName="$name_owner"Dup"$RANDOM" # Yes naming could be better. Also $RANDOM could also rarely collide.
+            echo "NOTE: Existing directories/folders exist. Renaming from \"$name\" to \"$newName\"."
+        else
+            newName="$name_owner"
+            echo "NOTE: Existing directory/folder exists. Renaming from \"$name\" to \"$newName\"."
+        fi
+        mv "$name" "$newName"
+        name="$newName"
     fi
 
-    (mv $name $projects_path/$name) && echo Successfully saved in $projects_path/$name || echo Error: Failed to move project.
+    (mv "$name" "$projects_path/$name") && echo "Successfully saved in $projects_path/$name" || echo "Error: Failed to move project."
     # cd $projects_path/$name && (cd $2;zoxide add .) # if this is added, disable by default
-    cd $projects_path/$name && cd $2
+    cd "$projects_path/$name" && cd "$2"
     rmdir $tmpgc
     OLDPWD=$olpwd
 }
@@ -118,7 +127,7 @@ else
     echo config_path=$config_path \(detected\)
     echo projects_path=$projects_path
     echo git_url=$git_url
-    echo version=1.1.1 \(hardcoded\)
+    echo version=1.2.0 \(hardcoded\)
     echo
     # echo zoxide=$(command -v zoxide >/dev/null && echo "found" || echo "not found")
     if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
